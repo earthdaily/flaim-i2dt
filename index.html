@@ -1,0 +1,180 @@
+<script>
+    document.getElementById('search-input').addEventListener('input', function (e) {
+      const q = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.main section').forEach(function (section) {
+        const text = section.textContent.toLowerCase();
+        section.classList.toggle('search-hidden', q.length > 0 && !text.includes(q));
+      });
+      document.querySelectorAll('.nav-tabs li').forEach(function (item) {
+        const text = item.textContent.toLowerCase();
+        item.classList.toggle('search-hidden', q.length > 0 && !text.includes(q));
+      });
+    });
+  </script>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLAIM Digital Twin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <img src="assets/earthdaily-logo.png" alt="EarthDaily Analytics" onerror="this.style.display='none'">
+        <p class="site-title">FLAIM Digital Twin</p>
+        <p class="site-subtitle">I2DT Consortium — Canada</p>
+      </div>
+
+      <div class="search-box">
+        <input type="search" id="search-input" placeholder="Search…" aria-label="Search">
+      </div>
+
+      <ul class="nav-tabs">
+        <li><a href="home.html" class="active">Home</a></li>
+        <li><a href="FLAIM-DT.html">FLAIM-DT</a></li>
+        <li><a href="open-sources.html">Open Sources</a></li>
+        <li class="external"><a href="https://itea4.org/project/i2dt.html" target="_blank" rel="noopener">I2DT Project</a></li>
+      </ul>
+    </aside>
+
+    <main class="main" id="main-content">
+      <h1>FLAIM Digital Twin</h1>
+
+      <nav class="toc" aria-label="Table of contents">
+        <p class="toc-title">On this page</p>
+        <ul>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#architecture">Architecture</a></li>
+          <li><a href="#inputs">Inputs</a></li>
+          <li><a href="#outputs">Outputs</a></li>
+          <li><a href="#use-cases">Use Cases</a></li>
+          <li><a href="#tool-information">Tool Information</a></li>
+        </ul>
+      </nav>
+
+      <!-- OVERVIEW -->
+      <section id="overview">
+        <h2>Overview</h2>
+        <p>
+            The <i>Fire Likelihood AI Model (FLAIM)</i> is a geospatial artificial intelligence platform that estimates the probability of wildfire occurrence given an ignition and observed environmental conditions. The model integrates satellite observations, weather, climate, topography, land use, disturbance history, and vegetation characteristics to learn the conditions under which fires occur and spread.
+        </p>
+        <p>
+            Using deep learning, FLAIM combines Earth observation data with observed fire outcomes to generate spatially explicit estimates of burn likelihood at high spatial resolution. The model is designed to be continuously updated as new satellite observations, environmental data, and fire records become available, enabling it to adapt to changing climatic conditions, land-use patterns, and disturbance regimes. By combining global Earth observation data with modern machine learning, FLAIM provides a scalable framework for quantifying wildfire likelihood and fuel conditions consistently across large geographic areas while remaining responsive to evolving environmental conditions.
+        </p>
+        <p>
+            By developing digital twin infrastructure around FLAIM, the computation and outputs become accessible by other digital twins in the consortium for further exchange of knowledge and development.
+        </p>
+      </section>
+
+      <!-- ARCHITECTURE -->
+      <section id="architecture">
+        <h2>Architecture</h2>
+        <p>
+            FLAIM operates through Earthdaily's <a href="https://earthdaily.com/earthone" target="_blank" rel="noopener">EarthOne</a> platform. Data in EarthOne is used as inputs to the FLAIM model to train and generate various outputs related to burn probability, ignition probability, and fuel hazards. With its expansion into the Ditto platform, once a digital twin request is made, the most updated data from the EarthOne platform is retrieved and the output is stored in the digital twin to be accessed by other digital twins in the consortium.
+        </p>
+        <img src="FLAIM-DTv2.png" alt="FLAIM Digital Twin infrastructure on Eclipse Ditto and EarthOne" style="max-width: 100%; height: auto; display: block; margin: 1rem 0;">
+
+        <p>
+          The diagram shows how a digital twin request moves through EarthOne, the FLAIM DT,
+          and Eclipse Ditto. In summary:
+        </p>
+        <ol>
+          <li>Message requests sent to a Thing (via Ditto UI, HTTP API, or MQTT)</li>
+          <li>Payload with a valid message name and required fields (e.g. <code>location</code>, <code>lat</code>/<code>lon</code>)</li>
+          <li>Thing ID and feature identifiers registered in Ditto</li>
+          <li>Updated Thing attributes, features, and properties (including timestamps)</li>
+          <li>Stored digital twin state readable via Ditto UI or HTTP GET</li>
+          <li>HTTP API responses when messages are sent or state is queried</li>
+          <li>Error responses when requests exceed time limits or use invalid input formats</li>
+        </ol>
+
+      </section>
+
+      <!-- INPUTS -->
+      <section id="inputs">
+        <h2>Inputs</h2>
+        <p>
+            FLAIM uses the following data sources for its inputs:
+            <ul>
+                <li>Sentinel-1</li>
+                <li>Sentinel-2</li>
+                <li>Copernicus</li>
+                <li>ECMWF</li>
+                <li>GFWED</li>
+            </ul>
+        </p>
+        <div class="note">
+            <strong>Note:</strong> Some inputs that FLAIM uses are proprietary and therefore are not listed here.
+        </div>
+        
+      </section>
+
+      <!-- OUTPUTS -->
+      <section id="outputs">
+        <h2>Outputs</h2>
+        <p>
+            FLAIM is expected to generate the following outputs:
+            <ul>
+                <li>Ignition Probability</li>
+                <li>Burn Probability</li>
+                <li>Fuel Hazards</li>
+            </ul>
+        </p>
+        <div class="note">
+            <strong>Note:</strong> Currently, only the Ignition Probability output can be accessed by the FLAIM-DT.
+        </div>
+        
+      </section>
+
+      <!-- USE CASES -->
+      <section id="use-cases">
+        <h2>Use Cases</h2>
+        <ul>
+            <li>Wildfire Risk Assessment</li>
+            <li>Fire Behavior Analysis</li>
+            <li>Insurance Risk Assessment</li>
+        </ul>
+
+
+        <h2>Limitations</h2>
+        <p>
+            Due to FLAIM being in the early stages of development, there are a few limitations to consider when using the FLAIM-DT.
+        </p>
+        <ul>
+          <li><strong>Permission Required:</strong> Access to the current FLAIM-DT requires one to be connected to the EarthDaily VPN and have permisison to access the EarthOne platform.</li>
+          <li><strong>Static Data Retrieval:</strong> The FLAIM-DT is currently structured as a standard API call to EarthDaily’s EarthOne platform where both the inputs and the outputs are being stored. Therefore, it can only retrieve already published information and does not run the full model live or collect real-time data from multiple APIs inside the digital twin itself. This decision was made to simplify the digital twin component as the FLAIM model itself is still in the development phase.</li>
+          <li><strong>Limited Data Access:</strong> The FLAIM-DT structured to access 1 input (burn data) and 1 output (ignition probability) from EarthOne. </li>
+          <li><strong>Region Restrictions:</strong> Currently, FLAIM is only trained to run in the Northwest region of the United States, and therefore any requests for data outside of this area will result in error. </li>
+        </ul>
+
+      <!-- TOOL INFORMATION -->
+      <section id="tool-information">
+        <h2>Tool Information</h2>
+        <ul>
+          <li><strong>Version:</strong> 1.0 (initial release)</li>
+          <li><strong>Type:</strong> Closed source</li>
+          <li><strong>Source code:</strong> authorized access only</li>
+          <li><strong>Company:</strong> SkyForest, an EarthDaily company</li>
+          <li><strong>Contact:</strong> Phil Green, Chief Science Officer — phil.green@earthdaily.com</li>
+        </ul>
+      </section>
+
+      <footer class="footer">
+        <p>© SkyForest | EarthDaily — FLAIM Digital Twin Platform</p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- paste shared search script here -->
+</body>
+</html>
+
+
+

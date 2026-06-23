@@ -1,0 +1,291 @@
+<script>
+    document.getElementById('search-input').addEventListener('input', function (e) {
+      const q = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.main section').forEach(function (section) {
+        const text = section.textContent.toLowerCase();
+        section.classList.toggle('search-hidden', q.length > 0 && !text.includes(q));
+      });
+      document.querySelectorAll('.nav-tabs li').forEach(function (item) {
+        const text = item.textContent.toLowerCase();
+        item.classList.toggle('search-hidden', q.length > 0 && !text.includes(q));
+      });
+    });
+  </script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FLAIM Digital Twin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <img src="assets/earthdaily-logo.png" alt="EarthDaily Analytics" onerror="this.style.display='none'">
+        <p class="site-title">FLAIM Digital Twin</p>
+        <p class="site-subtitle">I2DT Consortium — Canada</p>
+      </div>
+
+      <div class="search-box">
+        <input type="search" id="search-input" placeholder="Search…" aria-label="Search">
+      </div>
+
+      <ul class="nav-tabs">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="FLAIM-DT.html" class="active">FLAIM-DT</a></li>
+        <li><a href="open-sources.html">Open Sources</a></li>
+        <li class="external"><a href="https://itea4.org/project/i2dt.html" target="_blank" rel="noopener">I2DT Project</a></li>
+      </ul>
+    </aside>
+
+    <main class="main" id="main-content">
+      <h1>FLAIM-DT</h1>
+
+      <nav class="toc" aria-label="Table of contents">
+        <p class="toc-title">On this page</p>
+        <ul>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#eda-dt-infrastructure">EDA DT Infrastructure</a></li>
+          <li><a href="#flaim-digital-twin">FLAIM Digital Twin</a></li>
+          <li><a href="#interoperating-dt">Example: Interoperating with other Digital Twins</a></li>
+        </ul>
+      </nav>
+
+      <!-- OVERVIEW -->
+      <section id="overview">
+        <h2>Overview</h2>
+        <p>
+          This page outlines how FLAIM operates as a Digital Twin within the Eclipse Ditto environment and provides
+          access to information on EarthOne.
+        </p>
+
+      <!-- EDA DT INFRASTRUCTURE -->
+      <section id="eda-dt-infrastructure">
+        <h2>EDA DT Infrastructure</h2>
+        <p>
+          The main Eclipse Ditto platform is hosted on an EarthDaily dev machine for continuous operation across multiple Things. The FLAIM
+          Thing runs locally with a script that reads input and output data from FLAIM products on EarthOne.
+        </p>
+
+        <p>The FLAIM Digital Twin code in this repository is organized as follows:</p>
+        <pre><code>flaim-dt/
+├── main.py              # Ditto/MQTT connection and message handling
+├── earthone_access.py   # EarthOne product access (burn data; probability data)
+├── flaim_data.py        # Payload parsing and data retrieval logic
+└── requirements.txt     # Python package versions</code></pre>
+
+        <!-- FLAIM DIGITAL TWIN -->
+        <section id="flaim-digital-twin">
+        <h2>FLAIM Digital Twin</h2>
+        <p>The FLAIM DT currently connects to these EarthOne products:</p>
+        <ul>
+          <li><strong>Burn Data:</strong> Locations of previous fires (inputs to the FLAIM model)</li>
+          <li><strong>Burn Probability:</strong> Burn probability in a given location and time (output of the FLAIM model)</li>
+        </ul>
+
+        <h3>Burn Data</h3>
+        <p>
+          This data provides location and dates of previous fires. Access via subject <code>get_burn_data</code>. The FLAIM DT
+          identifies the EarthOne product, retrieves the most recent file metadata from the payload, and updates the
+          FLAIM Thing in Ditto.
+        </p>
+        <p>Accepted <code>location</code> values (must match EarthOne product coverage):</p>
+        <ul>
+          <li>California</li>
+          <li>Oregon</li>
+          <li>Washington</li>
+          <li>Idaho</li>
+          <li>Nevada</li>
+          <li>Arizona</li>
+        </ul>
+        <p>Example payload:</p>
+        <pre><code>{
+  "location": "california"
+}</code></pre>
+        <p>If you request a location that is not listed in EarthOne, the request will return an error. A successful request will return the following output:</p>
+        <pre><code>"burn": {
+  "timestamp": 1780698119,
+  "location": "california",
+  "state_code": "CA",
+  "burn": {
+    "id": "earthdaily:fraim:burn-data:v1:CA3480311887820240615",
+    "name": "CA3480311887820240615",
+    "product_id": "earthdaily:fraim:burn-data:v1",
+    "acquired": "2024-12-01T00:00:00+00:00",
+    "cs_code": "ESRI:102008",
+    "latitude": 34.803,
+    "longitude": -118.878,
+    "x_pixels": 307,
+    "y_pixels": 625,
+    "size": "307 x 625"
+  }
+}</code></pre>
+
+        <h3>Probability Data</h3>
+        <p>
+          This data provides a fire burn probability (0→1) at a location and time. Access via subject <code>get_probability_data</code>.
+          The FLAIM DT dentifies the EarthOne product, retrieves the most recent file metadata from the payload, and updates the
+          FLAIM Thing in Ditto.
+        </p>
+        <p>Payload uses latitude and longitude that intersect an EarthOne product tile:</p>
+        <pre><code>{
+  "location": "lat=46.4&lon=-121.5"
+}</code></pre>
+        <p>If you request coordinates that are outside the EarthOne product tiles, the request will return an error. A successful request will return the following output:</p>
+        <pre><code>"probability": {
+  "timestamp": 1780698049,
+  "location": "lat=46.4&lon=-121.5",
+  "latitude": 46.4,
+  "longitude": -121.5,
+  "data": {
+    "id": "earthdaily:fraim:probability:dl:v0:936_6_10p0_10_12_549_20251201",
+    "name": "936_6_10p0_10_12_549_20251201",
+    "product_id": "earthdaily:fraim:probability:dl:v0",
+    "acquired": "2025-12-01T00:00:00+00:00",
+    "cs_code": "EPSG:32610",
+    "x_pixels": 948,
+    "y_pixels": 948,
+    "pixels": "948 x 948",
+    "latitude": 46.4,
+    "longitude": -121.5,
+    "min": 0,
+    "max": 0.4157899022102356,
+    "mean": 0.05396370589733124,
+    "std": 0.01530715636909008,
+    "band_id": "probability"
+  }
+}</code></pre>
+
+        <!-- RELATED CONTENT — WILDFIRE DIGITAL TWIN DEMO -->
+    <section id="interoperating-dt">
+        <h2>Example: Interoperating with other Digital Twins</h2>
+        <p>
+          The data used in FLAIM could be utilized as inputs to other digital twins. One example was a "wildfire digital twin"
+          that was created to test this interoperability. The Wildfire DT "calculates" wildfire risk using inputs from three different api-structured digital twins: Weather, Fire, and FLAIM.
+        </p>
+        <div class="note">
+            <strong>Note:</strong> The Wildfire DT is not a real or accurate wildfire digital twin and is not used for any real-world applications. It was created solely for testing the interoperability of the FLAIM DT with other digital twins.
+        </div>
+
+        <p><strong>Digital Twins Running locally:</strong></p>
+        <ul>
+          <li>FLAIM DT</li>
+          <li>Wildfire DT Demo</li>
+        </ul>
+        <p><strong>Digital Twins Running on dev machine:</strong></p>
+        <ul>
+          <li>Weather DT</li>
+          <li>Fire DT</li>
+        </ul>
+
+        <img src="Interoperability_Demo.png" alt="Interoperating with other Digital Twins" style="max-width: 100%; height: auto; display: block; margin: 1rem 0;">
+        
+        <h4>Sending a Digital Twin Request</h4>
+        <p>
+          Using the same location as the
+          <a href="#probability-data">Probability Data</a> example, wildfire data is accessed via subject
+          <code>get_wildfire_data</code>. The Wildfire DT refreshes upstream Things, retrieves metadata from the payload,
+          and updates the Wildfire Thing.
+        </p>
+
+        <h4>Data Results</h4>
+        <p>
+          Once the Wildfire DT receives data from the other Things and runs its model, results appear in the Ditto UI.
+        </p>
+        <pre><code>{
+            "timestamp": 1781649506,
+            "location": "lat=46.4&lon=-121.5",
+            "latitude": 46.4,
+            "longitude": -121.5,
+            "weather_data": {
+              "coord": {
+                "lon": -121.5,
+                "lat": 46.4
+              },
+              "weather": [
+                {
+                  "id": 802,
+                  "main": "Clouds",
+                  "description": "scattered clouds",
+                  "icon": "03d"
+                }
+              ],
+              "base": "stations",
+              "main": {
+                "temp": 292.6,
+                "feels_like": 291.67,
+                "temp_min": 292.6,
+                "temp_max": 292.6,
+                "pressure": 1014,
+                "humidity": 41,
+                "sea_level": 1014,
+                "grnd_level": 855
+              },
+              "visibility": 10000,
+              "wind": {
+                "speed": 5.95,
+                "deg": 289,
+                "gust": 11.27
+              },
+              "clouds": {
+                "all": 46
+              },
+              "dt": 1781649025,
+              "sys": {
+                "country": "US",
+                "sunrise": 1781611978,
+                "sunset": 1781668834
+              },
+              "timezone": -25200,
+              "id": 5803964,
+              "name": "Morton",
+              "cod": 200
+            },
+            "fire_data": [
+              "latitude,longitude,bright_ti4,scan,track,acq_date,acq_time,satellite,instrument,confidence,version,bright_ti5,frp,daynight",
+              "19.3964,-155.2742,332.22,0.44,0.46,2026-06-16,7,N,VIIRS,n,2.0NRT,294.25,4.01,D",
+              "19.40017,-155.27882,349.1,0.44,0.46,2026-06-16,7,N,VIIRS,n,2.0NRT,308.29,13.02,D",
+              "19.40067,-155.27466,355.58,0.44,0.46,2026-06-16,7,N,VIIRS,l,2.0NRT,335.1,13.02,D",
+              "19.40117,-155.27049,367,0.44,0.46,2026-06-16,7,N,VIIRS,h,2.0NRT,326.06,22.67,D"
+            ],
+            "flaim_probability": {
+              "timestamp": 1781649259,
+              "location": "lat=46.4&lon=-121.5",
+              "latitude": 46.4,
+              "longitude": -121.5,
+              "data": {
+                "id": "earthdaily:fraim:probability:dl:v0:936_6_10p0_10_12_549_20251201",
+                "name": "936_6_10p0_10_12_549_20251201",
+                "product_id": "earthdaily:fraim:probability:dl:v0",
+                "acquired": "2025-12-01T00:00:00+00:00",
+                "cs_code": "EPSG:32610",
+                "x_pixels": 948,
+                "y_pixels": 948,
+                "pixels": "948 x 948",
+                "latitude": 46.4,
+                "longitude": -121.5,
+                "min": 0,
+                "max": 0.4157899022102356,
+                "mean": 0.05396370589733124,
+                "std": 0.01530715636909008,
+                "band_id": "probability"
+              }
+            },
+            "risk": 10%
+          }</code></pre>
+      </section>
+
+      <footer class="footer">
+        <p>© SkyForest / EarthDaily — FLAIM Digital Twin (I2DT Consortium)</p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- paste shared search script here -->
+</body>
+</html>

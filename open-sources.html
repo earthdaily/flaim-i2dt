@@ -1,0 +1,151 @@
+<script>
+    document.getElementById('search-input').addEventListener('input', function (e) {
+      const q = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.main section').forEach(function (section) {
+        const text = section.textContent.toLowerCase();
+        section.classList.toggle('search-hidden', q.length > 0 && !text.includes(q));
+      });
+      document.querySelectorAll('.nav-tabs li').forEach(function (item) {
+        const text = item.textContent.toLowerCase();
+        item.classList.toggle('search-hidden', q.length > 0 && !text.includes(q));
+      });
+    });
+  </script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Sources — FLAIM Digital Twin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <img src="assets/earthdaily-logo.png" alt="EarthDaily Analytics" onerror="this.style.display='none'">
+        <p class="site-title">FLAIM Digital Twin</p>
+        <p class="site-subtitle">I2DT Consortium — Canada</p>
+      </div>
+
+      <div class="search-box">
+        <input type="search" id="search-input" placeholder="Search…" aria-label="Search">
+      </div>
+
+      <ul class="nav-tabs">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="FLAIM-DT.html">FLAIM-DT</a></li>
+        <li><a href="open-sources.html" class="active">Open Sources</a></li>
+        <li class="external"><a href="https://itea4.org/project/i2dt.html" target="_blank" rel="noopener">I2DT Project</a></li>
+      </ul>
+    </aside>
+
+    <main class="main" id="main-content">
+      <h1>Open Sources</h1>
+
+      <nav class="toc" aria-label="Table of contents">
+        <p class="toc-title">On this page</p>
+        <ul>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#platform-components">Platform Components</a></li>
+          <li><a href="#flaim-dependencies">FLAIM DT Dependencies</a></li>
+          <li><a href="#closed-components">Closed Components</a></li>
+        </ul>
+      </nav>
+
+      <section id="overview">
+        <h2>Overview</h2>
+        <p>
+            This page documents open-source software used by the FLAIM Digital Twin and related I2DT
+            deployment environments. It is intended as a license and dependency inventory for the prototype.
+          </p>
+      </section>
+
+      <section id="platform-components">
+        <h2>Platform Components</h2>
+        <h3>Eclipse Ditto</h3>
+        <ul>
+          <li><strong>Role:</strong> Local digital twin middleware for Thing management and event publication</li>
+          <li><strong>License:</strong> Eclipse Public License 2.0</li>
+          <li><strong>Link:</strong> <a href="https://www.eclipse.dev/ditto/" target="_blank" rel="noopener">eclipse.dev/ditto</a></li>
+        </ul>
+        <h3>Eclipse Ditto Python Client</h3>
+        <ul>
+          <li><strong>Role:</strong> MQTT/protocol bindings for Ditto in FLAIM and demo scripts</li>
+          <li><strong>Version:</strong> 0.1.0</li>
+        </ul>
+        <h3>Docker</h3>
+        <ul>
+          <li><strong>Role:</strong> Container packaging and local execution</li>
+          <li><strong>License:</strong> Apache License 2.0</li>
+        </ul>
+        <h3>Kubernetes</h3>
+        <ul>
+          <li><strong>Role:</strong> Container orchestration for deployed services</li>
+          <li><strong>License:</strong> Apache License 2.0</li>
+        </ul>
+        <h3>PostgreSQL</h3>
+        <ul>
+          <li><strong>Role:</strong> Relational storage for platform data</li>
+          <li><strong>License:</strong> PostgreSQL License</li>
+        </ul>
+        <h3>MongoDB</h3>
+        <ul>
+          <li><strong>Role:</strong> Common backing store option for Eclipse Ditto deployments</li>
+          <li><strong>License:</strong> Server Side Public License or vendor-specific terms depending on distribution</li>
+        </ul>
+      </section>
+
+      <section id="flaim-dependencies">
+        <h2>FLAIM DT Dependencies</h2>
+        <h3><code>paho-mqtt</code></h3>
+        <ul>
+          <li><strong>Role:</strong> MQTT client for communication between FLAIM DT and Ditto</li>
+          <li><strong>Version:</strong> 2.1.0</li>
+        </ul>
+        <h3><code>requests</code></h3>
+        <ul>
+          <li><strong>Role:</strong> HTTP client for Ditto REST API calls</li>
+          <li><strong>Version:</strong> 2.32.5</li>
+        </ul>
+        <h3><code>python-dotenv</code></h3>
+        <ul>
+          <li><strong>Role:</strong> Environment configuration for local FLAIM DT deployment</li>
+          <li><strong>Version:</strong> 1.2.2</li>
+        </ul>
+        <h3><code>earthdaily-earthone</code></h3>
+        <ul>
+          <li><strong>Role:</strong> Python client for accessing FLAIM burn and probability products on the EarthOne platform</li>
+          <li><strong>Version:</strong> 6.0.1</li>
+          <li><strong>License:</strong> Proprietary</li>
+          <li><strong>Link:</strong> <a href="https://docs.earthone.earthdaily.com/index.html" target="_blank" rel="noopener">EarthOne documentation</a></li>
+        </ul>
+        <div class="note">
+            <strong>Note:</strong> All dependencies are listed in the <code>flaim-dt/requirements.txt</code> file.
+        </div>
+      </section>
+
+      <section id="closed-components">
+        <h2>Closed Components</h2>
+        <ul>
+          <li><strong>FLAIM Digital Twin codebase (this repository)</strong> — closed source; authorized access only</li>
+          <li><strong>EarthOne Platform / FLAIM model outputs</strong> — proprietary; access via EarthOne account</li>
+        </ul>
+        <p>
+          For EarthOne access:
+          <a href="https://docs.earthone.earthdaily.com/index.html" target="_blank" rel="noopener">EarthOne documentation</a>.
+        </p>
+      </section>
+
+      <footer class="footer">
+        <p>© SkyForest / EarthDaily — FLAIM Digital Twin (I2DT Consortium)</p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- paste shared search script here -->
+</body>
+</html>
