@@ -26,7 +26,7 @@
   <div class="layout">
     <aside class="sidebar">
       <div class="sidebar-logo">
-        <img src="assets/earthdaily-logo.png" alt="EarthDaily Analytics" onerror="this.style.display='none'">
+        <img src="images/EarthDaily_Logo.jpg" alt="EarthDaily Analytics" onerror="this.style.display='none'">
         <p class="site-title">FLAIM Digital Twin</p>
         <p class="site-subtitle">I2DT Consortium — Canada</p>
       </div>
@@ -39,6 +39,7 @@
         <li><a href="index.html">Home</a></li>
         <li><a href="FLAIM-DT.html" class="active">FLAIM-DT</a></li>
         <li><a href="open-sources.html">Open Sources</a></li>
+        <li><a href="contact.html">Contact</a></li>
         <li class="external"><a href="https://itea4.org/project/i2dt.html" target="_blank" rel="noopener">I2DT Project</a></li>
       </ul>
     </aside>
@@ -109,15 +110,15 @@
 }</code></pre>
         <p>If you request a location that is not listed in EarthOne, the request will return an error. A successful request will return the following output:</p>
         <pre><code>"burn": {
-  "timestamp": 1780698119,
+  "timestamp": &lt;unix-timestamp&gt;,
   "location": "california",
   "state_code": "CA",
   "burn": {
-    "id": "earthdaily:fraim:burn-data:v1:CA3480311887820240615",
-    "name": "CA3480311887820240615",
-    "product_id": "earthdaily:fraim:burn-data:v1",
-    "acquired": "2024-12-01T00:00:00+00:00",
-    "cs_code": "ESRI:102008",
+    "id": "&lt;burn-id&gt;",
+    "name": "&lt;burn-name&gt;",
+    "product_id": "&lt;product-id&gt;",
+    "acquired": "&lt;acquired-date&gt;",
+    "cs_code": "&lt;cs-code&gt;",
     "latitude": 34.803,
     "longitude": -118.878,
     "x_pixels": 307,
@@ -138,16 +139,16 @@
 }</code></pre>
         <p>If you request coordinates that are outside the EarthOne product tiles, the request will return an error. A successful request will return the following output:</p>
         <pre><code>"probability": {
-  "timestamp": 1780698049,
+  "timestamp": &lt;unix-timestamp&gt;,
   "location": "lat=46.4&lon=-121.5",
   "latitude": 46.4,
   "longitude": -121.5,
   "data": {
-    "id": "earthdaily:fraim:probability:dl:v0:936_6_10p0_10_12_549_20251201",
-    "name": "936_6_10p0_10_12_549_20251201",
-    "product_id": "earthdaily:fraim:probability:dl:v0",
-    "acquired": "2025-12-01T00:00:00+00:00",
-    "cs_code": "EPSG:32610",
+    "id": "&lt;probability-id&gt;",
+    "name": "&lt;probability-name&gt;",
+    "product_id": "&lt;product-id&gt;",
+    "acquired": "&lt;acquired-date&gt;",
+    "cs_code": "&lt;cs-code&gt;",
     "x_pixels": 948,
     "y_pixels": 948,
     "pixels": "948 x 948",
@@ -183,7 +184,7 @@
           <li>Fire DT</li>
         </ul>
 
-        <img src="Interoperability_Demo.png" alt="Interoperating with other Digital Twins" style="max-width: 100%; height: auto; display: block; margin: 1rem 0;">
+        <img src="images/Interoperability_Demo.png" alt="Interoperating with other Digital Twins" style="max-width: 100%; height: auto; display: block; margin: 1rem 0;">
         
         <h4>Sending a Digital Twin Request</h4>
         <p>
@@ -198,7 +199,7 @@
           Once the Wildfire DT receives data from the other Things and runs its model, results appear in the Ditto UI.
         </p>
         <pre><code>{
-            "timestamp": 1781649506,
+            "timestamp": &lt;unix-timestamp&gt;,
             "location": "lat=46.4&lon=-121.5",
             "latitude": 46.4,
             "longitude": -121.5,
@@ -254,19 +255,19 @@
               "19.40117,-155.27049,367,0.44,0.46,2026-06-16,7,N,VIIRS,h,2.0NRT,326.06,22.67,D"
             ],
             "flaim_probability": {
-              "timestamp": 1781649259,
+              "timestamp": &lt;unix-timestamp&gt;,
               "location": "lat=46.4&lon=-121.5",
               "latitude": 46.4,
               "longitude": -121.5,
               "data": {
-                "id": "earthdaily:fraim:probability:dl:v0:936_6_10p0_10_12_549_20251201",
-                "name": "936_6_10p0_10_12_549_20251201",
-                "product_id": "earthdaily:fraim:probability:dl:v0",
-                "acquired": "2025-12-01T00:00:00+00:00",
-                "cs_code": "EPSG:32610",
-                "x_pixels": 948,
-                "y_pixels": 948,
-                "pixels": "948 x 948",
+                "id": "&lt;probability-id&gt;",
+                "name": "&lt;probability-name&gt;",
+                "product_id": "&lt;product-id&gt;",
+                "acquired": "&lt;acquired-date&gt;",
+                "cs_code": "&lt;cs-code&gt;",
+                "x_pixels": &lt;x-pixels&gt;,
+                "y_pixels": &lt;y-pixels&gt;,
+                "pixels": "&lt;x-pixels&gt; x &lt;y-pixels&gt;",
                 "latitude": 46.4,
                 "longitude": -121.5,
                 "min": 0,

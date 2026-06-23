@@ -1,0 +1,93 @@
+<script>
+    document.getElementById('search-input').addEventListener('input', function (e) {
+      const q = e.target.value.toLowerCase().trim();
+      document.querySelectorAll('.main section').forEach(function (section) {
+        const text = section.textContent.toLowerCase();
+        section.classList.toggle('search-hidden', q.length > 0 && !text.includes(q));
+      });
+      document.querySelectorAll('.nav-tabs li').forEach(function (item) {
+        const text = item.textContent.toLowerCase();
+        item.classList.toggle('search-hidden', q.length > 0 && !text.includes(q));
+      });
+    });
+  </script>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — FLAIM Digital Twin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <div class="layout">
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="images/EarthDaily_Logo.jpg" alt="EarthDaily Analytics" onerror="this.style.display='none'">
+            <p class="site-title">FLAIM Digital Twin</p>
+            <p class="site-subtitle">I2DT Consortium — Canada</p>
+        </div>
+
+      <div class="search-box">
+        <input type="search" id="search-input" placeholder="Search…" aria-label="Search">
+      </div>
+
+      <ul class="nav-tabs">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="FLAIM-DT.html">FLAIM-DT</a></li>
+        <li><a href="open-sources.html">Open Sources</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+        <li class="external"><a href="https://itea4.org/project/i2dt.html" target="_blank" rel="noopener">I2DT Project</a></li>
+      </ul>
+    </aside>
+
+    <main class="main" id="main-content">
+      <h1>Contact</h1>
+
+      <nav class="toc" aria-label="Table of contents">
+        <p class="toc-title">On this page</p>
+        <ul>
+          <li><a href="#company">Company</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#get-in-touch">Get in Touch</a></li>
+        </ul>
+      </nav>
+
+      <section id="company">
+        <h2>Company</h2>
+        <p><strong>SkyForest</strong>, an EarthDaily Company</p>
+        <p>
+          <strong>Website:</strong>
+          <a href="[https://earthdaily.com]" target="_blank" rel="noopener">[earthdaily.com]</a>
+        </p>
+      </section>
+
+      <section id="about">
+        <h2>About</h2>
+        <p>
+          [EarthDaily Analytics delivers daily satellite data and geospatial intelligence to help organizations monitor and understand change across the planet. Through platforms such as <a href="https://earthdaily.com/earthone" target="_blank" rel="noopener">EarthOne</a>, EarthDaily provides consistent, analysis-ready Earth observation data for applications including environmental monitoring, risk assessment, and scientific research. SkyForest, as part of the EarthDaily group, applies this capability to wildfire and forest-related analytics, including the FLAIM Digital Twin.]
+        </p>
+      </section>
+
+      <section id="get-in-touch">
+        <h2>Get in Touch</h2>
+        <ul>
+          <li><strong>Email:</strong> <a href="mailto:[phil.green@earthdaily.com]">[phil.green@earthdaily.com]</a></li>
+          <li><strong>Phone:</strong> [+1 (xxx) xxx-xxxx]</li>
+          <li><strong>Location:</strong> Vancouver, BC, Canada</li>
+        </ul>
+        <div class="note">
+          <strong>Note:</strong> For FLAIM-DT technical access, VPN and EarthOne permissions may be required. See the <a href="index.html#tool-information">Tool Information</a> section on the Home page for details.
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>SkyForest, an EarthDaily Company — FLAIM Digital Twin Platform</p>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
