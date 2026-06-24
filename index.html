@@ -104,12 +104,12 @@
         <p>
             FLAIM uses the following data sources for its inputs:
             <ul>
-                <li>Sentinel-1</li>
-                <li>Sentinel-2</li>
-                <li>Copernicus</li>
-                <li>ECMWF</li>
-                <li>GFWED</li>
-            </ul>
+              <li><strong>Sentinel-1</strong> — C-band synthetic aperture radar (SAR) imagery from the European Space Agency’s Copernicus programme. Provides all-weather, day-and-night observations of surface structure and moisture, supporting fuel moisture and vegetation structure mapping.</li>
+              <li><strong>Sentinel-2</strong> — Multispectral optical imagery from the European Space Agency’s Copernicus programme. Used to characterize vegetation cover, land use, fuel loads, and disturbance history at high spatial resolution through visible and near-infrared spectral bands.</li>
+              <li><strong>Copernicus</strong> — Land monitoring and emergency management products from the European Space Agency’s Copernicus programme, including land cover, vegetation indices, and burned-area information that support fuel and landscape characterization.</li>
+              <li><strong>ECMWF</strong> — Weather and climate reanalysis data from the European Centre for Medium-Range Weather Forecasts. Provides variables such as temperature, humidity, wind, and precipitation that describe fire weather and environmental conditions at the time of ignition.</li>
+              <li><strong>GFWED</strong> — Global Fire Weather Database. Supplies fire weather indices derived from meteorological data to characterize conditions that influence ignition and fire spread potential.</li>
+          </ul>
         </p>
         <div class="note">
             <strong>Note:</strong> Some inputs that FLAIM uses are proprietary and therefore are not listed here.
@@ -150,7 +150,7 @@
         </p>
         <ul>
           <li><strong>Permission Required:</strong> Access to the current FLAIM-DT requires one to be connected to the EarthDaily VPN and have permisison to access the EarthOne platform.</li>
-          <li><strong>Static Data Retrieval:</strong> The FLAIM-DT is currently structured as a standard API call to EarthDaily’s EarthOne platform where both the inputs and the outputs are being stored. Therefore, it can only retrieve already published information and does not run the full model live or collect real-time data from multiple APIs inside the digital twin itself. This decision was made to simplify the digital twin component as the FLAIM model itself is still in the development phase.</li>
+          <li><strong>Static Data Retrieval:</strong> The FLAIM-DT is currently structured as a standard API call to EarthDaily’s EarthOne platform where both the inputs and the outputs are being stored. Therefore, it can only retrieve already published information that is used or outputted from the FLAIM model.</li>
           <li><strong>Limited Data Access:</strong> The FLAIM-DT structured to access 1 input (burn data) and 1 output (ignition probability) from EarthOne. </li>
           <li><strong>Region Restrictions:</strong> Currently, FLAIM is only trained to run in the Northwest region of the United States, and therefore any requests for data outside of this area will result in error. </li>
         </ul>
